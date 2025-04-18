@@ -1,0 +1,49 @@
+# AI Faceless YT Config Example
+
+# --- Pipeline AI Provider Selection ---
+script_provider: openai     # openai or anthropic
+image_provider: openai      # openai or pexels
+
+generate_script: false      # Set true to generate script from a topic/prompt
+script: |
+  Your video script goes here. If generate_script is true, this can be a topic or prompt instead.
+output: output.mp4          # Output video file
+
+# --- Video/Audio/FX Settings ---
+style: cinematic
+voice: Rachel
+transition:
+  type: crossfade
+  duration: 1.0
+overlay:
+  folder: assets/overlays/
+  opacity: 0.25
+background_music:
+  tracks:
+    - url: https://example.com/music.mp3
+      volume: 0.2
+    - url: https://example.com/ambient.mp3
+      volume: 0.1
+sound_effects:
+  enabled: true
+  folder: assets/sfx/
+  timing: random  # or "end", "start", "between"
+stock_footage:
+  folder: assets/stock/
+  use_probability: 0.5
+transitions:
+  enabled: true
+  folder: assets/transitions/
+  mode: insert   # or 'overlay'
+  duration: 1.0
+  duck_db: -8
+  sfx_combo: true
+  scene_transitions: []  # optional types per transition
+resolution:
+  width: 1280
+  height: 720
+random_seed: 42
+voice_settings:
+  stability: 0.75
+  similarity_boost: 0.5
+fps: 24

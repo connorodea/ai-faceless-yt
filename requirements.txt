@@ -1,0 +1,36 @@
+# Core dependencies for AI Faceless YouTube Channel MVP
+moviepy>=1.0.3
+requests>=2.31.0
+tqdm>=4.66.2
+python-dotenv>=1.0.1
+# For AI voiceover (choose one or more as needed)
+elevenlabs>=0.2.26  # For ElevenLabs TTS API
+# For image generation (Stable Diffusion API, or use requests for DALL-E or Unsplash)
+# If using OpenAI for image generation or TTS, add openai
+openai>=1.14.3
+# For YAML parsing
+pyyaml>=6.0.1
+# For audio segmentation
+pydub>=0.25.1
+# For better logging output formatting (optional enhancement)
+rich>=13.7.0
+
+# For subtitles and video processing
+ffmpeg-python>=0.2.0
+
+# For advanced AI integrations
+anthropic>=0.7.7
+deepgram-sdk>=2.13.0
+
+# For testing
+pytest>=7.4.4
+
+# For packaging and distribution
+setuptools>=69.5.1
+twine>=5.0.0
+
+# Optional: for future web/async integration
+python-multipart>=0.0.9
+aiohttp>=3.9.3
+httpx>=0.27.0
+uvicorn>=0.29.0
