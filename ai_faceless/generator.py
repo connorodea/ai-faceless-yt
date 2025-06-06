@@ -1,8 +1,14 @@
 import os
 import logging
 import yaml
-from moviepy import ImageClip, VideoFileClip, concatenate_videoclips, CompositeVideoClip, AudioFileClip, CompositeAudioClip
-from moviepy.video.fx.all import resize
+from moviepy import (
+    ImageClip,
+    VideoFileClip,
+    concatenate_videoclips,
+    CompositeVideoClip,
+    AudioFileClip,
+    CompositeAudioClip,
+)
 from elevenlabs import generate, save, set_api_key
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -322,13 +328,13 @@ def save_srt(srt, output_path):
     with open(output_path, 'w') as f:
         f.write(srt)
 
-def run_pipeline():
+def run_pipeline(config_path: str = "config.yaml"):
     """
     Main pipeline entrypoint. Supports configurable providers for script and image generation, subtitle generation, and all API integrations.
     """
     start_time = time.time()
     validate_env()
-    with open("config.yaml", "r") as f:
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
     validate_config(config)
 

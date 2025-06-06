@@ -62,6 +62,18 @@ See `config.yaml` for customizable options such as voice, overlays, music, trans
 
 ![Example Output Screenshot](assets/example_output.png)
 
+## Web API
+
+You can run the pipeline via a small FastAPI server:
+
+```bash
+ai-faceless-api
+```
+
+Send a POST request to `/generate` with a JSON body containing a `script` field.
+The endpoint returns the path to the generated video file once processing
+finishes.
+
 ## Troubleshooting
 - Ensure all API keys are set in `.env` (see below).
 - If you see `Cannot declare ... twice` in `pyproject.toml`, remove duplicate sections as shown above.
