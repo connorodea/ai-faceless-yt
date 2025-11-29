@@ -18,3 +18,19 @@ def test_generate_endpoint(monkeypatch):
     resp = client.post("/generate", json={"script": "hello"})
     assert resp.status_code == 200
     assert called.get('ran')
+
+
+def test_index_page():
+    resp = client.get("/")
+    assert resp.status_code == 200
+    assert "text/html" in resp.headers.get("content-type", "")
+
+
+def test_generate_form(monkeypatch):
+    called = {}
+    def fake_run_pipeline(config_path="config.yaml"):
+        called['ran'] = True
+    monkeypatch.setattr(api, "run_pipeline", fake_run_pipeline)
+    resp = client.post("/generate-form", data={"script": "hello"})
+    assert resp.status_code == 200
+    assert called.get('ran')

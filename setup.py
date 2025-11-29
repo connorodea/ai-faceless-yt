@@ -16,6 +16,7 @@ setup(
         "pyyaml",
         "fastapi",
         "uvicorn",
+        "Jinja2",
     ],
     entry_points={
         "console_scripts": [
