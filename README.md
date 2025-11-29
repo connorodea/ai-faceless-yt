@@ -74,6 +74,15 @@ Send a POST request to `/generate` with a JSON body containing a `script` field.
 The endpoint returns the path to the generated video file once processing
 finishes.
 
+### Docker
+
+You can also run the API server in a container:
+
+```bash
+docker build -t ai-faceless .
+docker run -p 8000:8000 ai-faceless
+```
+
 ## Troubleshooting
 - Ensure all API keys are set in `.env` (see below).
 - If you see `Cannot declare ... twice` in `pyproject.toml`, remove duplicate sections as shown above.
