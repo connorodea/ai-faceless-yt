@@ -88,10 +88,10 @@ docker run -p 8000:8000 ai-faceless
 
 ## Web UI
 
-The FastAPI server serves a minimal HTML interface at `http://localhost:8000/`.
-Enter your script and click **Generate Video** to run the pipeline in the
-browser.  The page will display a link to the generated video when the process
-finishes.
+The FastAPI server also ships with a small Bootstrap-based interface at
+`http://localhost:8000/`. Paste your script into the form and click
+**Generate Video**. When processing finishes the page shows a link to the
+resulting video.
 
 ## Troubleshooting
 - Ensure all API keys are set in `.env` (see below).
