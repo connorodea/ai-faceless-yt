@@ -3,7 +3,7 @@ import os
 import uuid
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
@@ -19,6 +19,13 @@ class GenerateRequest(BaseModel):
     script: str
 
 
+def _verify_api_key(request: Request) -> None:
+    """Ensure X-API-Key header matches API_KEY if set."""
+    api_key = os.getenv("API_KEY")
+    if api_key and request.headers.get("x-api-key") != api_key:
+        raise HTTPException(status_code=401, detail="Invalid API key")
+
+
 @app.get("/", response_class=HTMLResponse)
 async def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
@@ -28,7 +35,8 @@ def health() -> JSONResponse:
     return JSONResponse({"status": "ok"})
 
 @app.post("/generate")
-async def generate(req: GenerateRequest):
+async def generate(req: GenerateRequest, request: Request):
+    _verify_api_key(request)
     """Run the video generation pipeline with a provided script."""
     # Load base config
     cfg_path = os.getenv("CONFIG_PATH", "config.yaml")
@@ -48,6 +56,7 @@ async def generate(req: GenerateRequest):
 
 @app.post("/generate-form", response_class=HTMLResponse)
 async def generate_form(request: Request, script: str = Form(...)):
+    _verify_api_key(request)
     cfg_path = os.getenv("CONFIG_PATH", "config.yaml")
     with open(cfg_path, "r") as f:
         config = yaml.safe_load(f)

@@ -76,6 +76,8 @@ finishes.
 
 The API reads environment variables from a `.env` file. You can override the
 configuration path with `CONFIG_PATH` and change the listening port via `PORT`.
+Set `API_KEY` to require authentication; clients must send the key in an
+`X-API-Key` header.
 
 ### Docker
 
