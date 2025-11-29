@@ -74,6 +74,9 @@ Send a POST request to `/generate` with a JSON body containing a `script` field.
 The endpoint returns the path to the generated video file once processing
 finishes.
 
+The API reads environment variables from a `.env` file. You can override the
+configuration path with `CONFIG_PATH` and change the listening port via `PORT`.
+
 ### Docker
 
 You can also run the API server in a container:
