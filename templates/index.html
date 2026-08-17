@@ -36,7 +36,11 @@
                 <button type="submit" class="btn btn-primary btn-lg">Generate Video</button>
             </div>
         </form>
-        {% if output %}
+        {% if job_id %}
+        <div class="mt-4 alert alert-info text-center">
+            Job submitted! Check status <a href="/job/{{ job_id }}" class="link-light">here</a>.
+        </div>
+        {% elif output %}
         <div class="mt-4 alert alert-success text-center">
             <a href="{{ output }}" class="link-light">{{ output }}</a>
         </div>

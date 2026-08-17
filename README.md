@@ -71,8 +71,8 @@ ai-faceless-api
 ```
 
 Send a POST request to `/generate` with a JSON body containing a `script` field.
-The endpoint returns the path to the generated video file once processing
-finishes.
+The endpoint returns a `job_id` immediately. Poll `/job/{job_id}` to retrieve the
+output path once processing finishes.
 
 The API reads environment variables from a `.env` file. You can override the
 configuration path with `CONFIG_PATH` and change the listening port via `PORT`.
@@ -92,8 +92,8 @@ docker run -p 8000:8000 ai-faceless
 
 The FastAPI server also ships with a small Bootstrap-based interface at
 `http://localhost:8000/`. Paste your script into the form and click
-**Generate Video**. When processing finishes the page shows a link to the
-resulting video.
+**Generate Video**. The page will display a job link where you can monitor
+progress and download the video once ready.
 
 ## Troubleshooting
 - Ensure all API keys are set in `.env` (see below).
@@ -113,4 +113,3 @@ resulting video.
 - Add overlays (vintage/grunge)
 - Support for stock footage
 - Advanced transitions
-- Improve Web UI

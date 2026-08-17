@@ -32,7 +32,11 @@ def test_generate_endpoint(monkeypatch):
     monkeypatch.setattr(api_mod, "run_pipeline", fake_run_pipeline)
     resp = client.post("/generate", json={"script": "hello"})
     assert resp.status_code == 200
+    data = resp.json()
+    assert "job_id" in data
     assert called.get('ran')
+    status = client.get(f"/job/{data['job_id']}").json()
+    assert status["status"] == "completed"
 
 
 def test_index_page(monkeypatch):
@@ -51,6 +55,7 @@ def test_generate_form(monkeypatch):
     monkeypatch.setattr(api_mod, "run_pipeline", fake_run_pipeline)
     resp = client.post("/generate-form", data={"script": "hello"})
     assert resp.status_code == 200
+    assert "Job submitted" in resp.text
     assert called.get('ran')
 
 
@@ -61,3 +66,4 @@ def test_api_key_required(monkeypatch):
     assert resp.status_code == 401
     resp = client.post("/generate", json={"script": "hi"}, headers={"X-API-Key": "secret"})
     assert resp.status_code == 200
+    assert "job_id" in resp.json()
