@@ -77,5 +77,8 @@ Thumbs.db
 
 # Example assets
 assets/
+!assets/
 examples/
+!assets/overlays/
+!assets/overlays/.gitkeep
 .venv/

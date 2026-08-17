@@ -1,9 +1,14 @@
 import os
 import logging
 import yaml
-from moviepy import ImageClip, VideoFileClip, concatenate_videoclips, CompositeVideoClip, AudioFileClip, CompositeAudioClip
-from moviepy.video.fx.all import resize
-from elevenlabs import generate, save, set_api_key
+from moviepy import (
+    ImageClip,
+    VideoFileClip,
+    concatenate_videoclips,
+    CompositeVideoClip,
+    AudioFileClip,
+    CompositeAudioClip,
+)
 from openai import OpenAI
 from dotenv import load_dotenv
 import requests
@@ -36,19 +41,15 @@ logging.getLogger().addHandler(file_handler)
 
 # Load API keys from .env
 load_dotenv()
-ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 PEXELS_API_KEY = os.getenv("PEXELS_API_KEY")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 DEEPGRAM_API_KEY = os.getenv("DEEPGRAM_API_KEY")
 
-if ELEVENLABS_API_KEY:
-    set_api_key(ELEVENLABS_API_KEY)
-
 DALLE_STYLES = ["vintage", "cinematic", "high quality", "grunge", "scratches", "moody lighting", "analog film"]
 
 def validate_env():
-    required_vars = ["OPENAI_API_KEY", "ELEVENLABS_API_KEY"]
+    required_vars = ["OPENAI_API_KEY", "DEEPGRAM_API_KEY"]
     # Add new required vars as needed
     missing = [var for var in required_vars if not os.getenv(var)]
     if missing:
@@ -66,12 +67,22 @@ def validate_config(config):
     if "image_provider" in config and config["image_provider"] not in {"openai", "pexels"}:
         raise ValueError("image_provider must be 'openai' or 'pexels'")
 
-# Helper: Generate voiceover from script
-def generate_voiceover(script_text, voice="Rachel", output_path="voiceover.mp3"):
+# Helper: Generate voiceover from script using Deepgram TTS
+def generate_voiceover(script_text, voice="aura-asteria-en", output_path="voiceover.mp3"):
     validate_env()
+    if not DEEPGRAM_API_KEY:
+        raise ValueError("Set DEEPGRAM_API_KEY in your .env file.")
     try:
-        audio = generate(text=script_text, voice=voice)
-        save(audio, output_path)
+        tts_url = f"https://api.deepgram.com/v1/speak?model={voice}&encoding=mp3"
+        headers = {
+            "Authorization": f"Token {DEEPGRAM_API_KEY}",
+            "Content-Type": "application/json",
+        }
+        response = requests.post(tts_url, headers=headers, json={"text": script_text})
+        response.raise_for_status()
+
+        with open(output_path, "wb") as f:
+            f.write(response.content)
 
         # Load full audio and split by estimated sentence count
         full_audio = AudioSegment.from_file(output_path)
@@ -79,7 +90,7 @@ def generate_voiceover(script_text, voice="Rachel", output_path="voiceover.mp3")
         avg_duration = len(full_audio) / sentence_count
         durations = [avg_duration for _ in range(sentence_count)]
         return output_path, durations
-    except Exception as e:
+    except Exception:
         logging.exception("Voiceover generation failed")
         raise
 
@@ -322,13 +333,13 @@ def save_srt(srt, output_path):
     with open(output_path, 'w') as f:
         f.write(srt)
 
-def run_pipeline():
+def run_pipeline(config_path: str = "config.yaml"):
     """
     Main pipeline entrypoint. Supports configurable providers for script and image generation, subtitle generation, and all API integrations.
     """
     start_time = time.time()
     validate_env()
-    with open("config.yaml", "r") as f:
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
     validate_config(config)
 
@@ -348,7 +359,7 @@ def run_pipeline():
     overlay_folder = config.get("overlay", {}).get("folder")
     stock_folder = config.get("stock_footage", {}).get("folder")
     duration = config.get("duration", 5)
-    voice = config.get("voice", "Rachel")
+    voice = config.get("voice", "aura-asteria-en")
     style = config.get("style")
     transition_duration = config.get("transition", {}).get("duration", 1.0)
     overlay_opacity = config.get("overlay", {}).get("opacity", 0.25)

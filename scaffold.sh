@@ -18,8 +18,8 @@ mkdir -p \
 if [ ! -f .env.example ]; then
   cat <<EOF > .env.example
 # Example environment file
-ELEVENLABS_API_KEY=your-elevenlabs-api-key
 OPENAI_API_KEY=your-openai-api-key
+DEEPGRAM_API_KEY=your-deepgram-api-key
 EOF
   echo "✅ Created .env.example"
 fi
@@ -34,7 +34,7 @@ script: |
   The future of AI is being written by those who automate.
 
 output: output/demo_video.mp4
-voice: Rachel
+voice: aura-asteria-en
 style: cinematic
 
 transition:
