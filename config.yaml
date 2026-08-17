@@ -11,7 +11,7 @@ output: output.mp4          # Output video file
 
 # --- Video/Audio/FX Settings ---
 style: cinematic
-voice: Rachel
+voice: aura-asteria-en
 transition:
   type: crossfade
   duration: 1.0
