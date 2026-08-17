@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AI Faceless Video Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            background-color: rgba(0,0,0,0.6);
+            padding: 2rem;
+            border-radius: .5rem;
+            width: 80%;
+            max-width: 700px;
+        }
+        textarea {
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 class="text-center mb-4">AI Faceless Video Generator</h1>
+        <form action="/generate-form" method="post">
+            <div class="mb-3">
+                <textarea class="form-control" name="script" rows="8" placeholder="Enter your script here"></textarea>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Generate Video</button>
+            </div>
+        </form>
+        {% if job_id %}
+        <div class="mt-4 alert alert-info text-center">
+            Job submitted! Check status <a href="/job/{{ job_id }}" class="link-light">here</a>.
+        </div>
+        {% elif output %}
+        <div class="mt-4 alert alert-success text-center">
+            <a href="{{ output }}" class="link-light">{{ output }}</a>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

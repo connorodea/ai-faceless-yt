@@ -25,14 +25,17 @@ dependencies = [
   "rich>=13.7.0",
   "anthropic>=0.7.7",
   "deepgram-sdk>=2.13.0",
-  "ffmpeg-python>=0.2.0"
+  "ffmpeg-python>=0.2.0",
+  "uvicorn>=0.29.0",
+  "fastapi>=0.111.0",
+  "Jinja2>=3.1.3"
 ]
-urls = {
-  "Homepage" = "https://github.com/connorodea/ai-faceless-yt",
-  "Documentation" = "https://github.com/connorodea/ai-faceless-yt#readme",
-  "Source" = "https://github.com/connorodea/ai-faceless-yt",
-  "Tracker" = "https://github.com/connorodea/ai-faceless-yt/issues"
-}
+[project.urls]
+Homepage = "https://github.com/connorodea/ai-faceless-yt"
+Documentation = "https://github.com/connorodea/ai-faceless-yt#readme"
+Source = "https://github.com/connorodea/ai-faceless-yt"
+Tracker = "https://github.com/connorodea/ai-faceless-yt/issues"
+
 
 [project.optional-dependencies]
 dev = [
@@ -44,13 +47,12 @@ dev = [
 
 [project.scripts]
 ai-faceless-yt = "ai_faceless.generator:run_pipeline"
+ai-faceless-api = "ai_faceless.api:main"
 
 [build-system]
 requires = ["setuptools>=69.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
-[project.scripts]
-ai-faceless-yt = "ai_faceless.generator:run_pipeline"
 
 [tool.setuptools.packages.find]
 where = ["ai_faceless"]

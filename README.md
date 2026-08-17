@@ -62,6 +62,39 @@ See `config.yaml` for customizable options such as voice, overlays, music, trans
 
 ![Example Output Screenshot](assets/example_output.png)
 
+## Web API
+
+You can run the pipeline via a small FastAPI server:
+
+```bash
+ai-faceless-api
+```
+
+Send a POST request to `/generate` with a JSON body containing a `script` field.
+The endpoint returns a `job_id` immediately. Poll `/job/{job_id}` to retrieve the
+output path once processing finishes.
+
+The API reads environment variables from a `.env` file. You can override the
+configuration path with `CONFIG_PATH` and change the listening port via `PORT`.
+Set `API_KEY` to require authentication; clients must send the key in an
+`X-API-Key` header.
+
+### Docker
+
+You can also run the API server in a container:
+
+```bash
+docker build -t ai-faceless .
+docker run -p 8000:8000 ai-faceless
+```
+
+## Web UI
+
+The FastAPI server also ships with a small Bootstrap-based interface at
+`http://localhost:8000/`. Paste your script into the form and click
+**Generate Video**. The page will display a job link where you can monitor
+progress and download the video once ready.
+
 ## Troubleshooting
 - Ensure all API keys are set in `.env` (see below).
 - If you see `Cannot declare ... twice` in `pyproject.toml`, remove duplicate sections as shown above.
@@ -80,4 +113,3 @@ See `config.yaml` for customizable options such as voice, overlays, music, trans
 - Add overlays (vintage/grunge)
 - Support for stock footage
 - Advanced transitions
-- Web UI (future)
